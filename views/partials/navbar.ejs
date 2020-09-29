@@ -1,0 +1,38 @@
+<head>
+
+</head>
+<div>
+  <nav class="navbar bg-primary navbar-expand-lg navbar-dark navBar fixed-top">
+    <a class="navbar-brand" href="/">Ponzi9ja</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarColor01"
+      aria-controls="navbarColor01"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/services">Services</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/blog">Blog</a>
+        </li>
+      </ul>
+      <h4 class="p-2 text-center text-white text-capitalize">
+        <%= user.name %>
+      </h4>
+
+      <a href="/users/logout" class="btn btn-secondary">Logout</a>
+    </div>
+  </nav>
+</div>

@@ -1,0 +1,18 @@
+<% users.forEach(user => { %>
+  <% 
+    user.amount === '0' ? user.amount = ' ' : user.amount = `₦${user.amount}`;
+    if(!user.status) {
+      user.pledge.pledgeType = 'N/A';
+      user.deadline = 'N/A';
+      user.status = 'None';
+    }
+  %>
+  <tr>
+    <td><b><%= user.name %></b></td>
+    <td><%= user.email %></td>
+    <td><b><%= user.pledge.pledgeType %></b></td>
+    <td><%= user.status %></td>
+    <td><b><%= formatAmount(user.amount) %></b></td>
+    <td><%= user.deadline %></td>
+  </tr>
+<% }) %>

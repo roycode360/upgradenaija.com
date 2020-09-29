@@ -1,0 +1,104 @@
+<head>
+  <link rel="stylesheet" href="/stylesheets/dashboard.css" />
+</head>
+<div class="container dash-cont">
+  <header class="dash-header">
+    <h3 class="text-center pt-3">
+      <caption class="mt-auto text-capitalize text-dark">
+        Welcome to your dashboard <%=user.name %>
+      </caption>
+    </h3>
+
+    <p class="text-capitalize text-dark m-auto py-3 text-center">
+      <q>
+        Sequi aut commodi, quibusdam provident eveniecommodi numquam possimus
+        id, qui eligendi hic sapiente!
+      </q>
+      <br />
+      <cite class="text-right">-lorem-</cite>
+    </p>
+  </header>
+  <% include ../messages %>
+  <section class="info-section">
+    <div class="row pt-5">
+      <div class="col-sm">
+        <div class="card pledge-card shadow-lg">
+          <div class="card-img-top pledge-card-top">
+            <p class="text-center mt-2 lead">
+              <i class="fas fa-volume-up fa-1x text-light"></i>
+              <br />
+              <b class="mt-3"> Pledge to finance someone's Dream </b>
+            </p>
+          </div>
+          <div class="card-body">
+            <p class="lead">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel
+              facilis eius fugiat illum expedita, perspiciatis repellat
+              molestias totam quae dignissimos beatae nulla modi maiores laborum
+              quo ullam? Ipsa, maiores facilis?
+            </p>
+          </div>
+          <div class="card-footer">
+            <div class="d-flex">
+              <span class="bg-primary mx-2 rounded">
+                <a href="#pledgeForm" class="btn text-white">Pledge Now</a>
+              </span>
+              <span class="bg-primary mx-2 rounded">
+                <a href="#viewMatched" class="btn btn-block text-white"
+                  >View Matched</a
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm">
+        <div class="card pledge-card">
+          <div class="card-header bg-primary pledge-card-top">
+            <p class="text-center lead">
+              <i class="fas fa-volume-up fa-1x text-light"></i>
+              <br />
+              <b class="mt-3 text-white">Instructions </b>
+            </p>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>
+                <p>
+                  delectus nam fuga autem doloribus provident natus aspernatur.
+                </p>
+              </li>
+              <li>
+                <p>
+                  excepturi facere ratione, aliquam nesciunt tempora consectetur
+                  adipisicing.
+                </p>
+              </li>
+              <li>
+                <p>
+                  commodi quod sint sed et asperiores laboriosam reiciendis,
+                </p>
+              </li>
+              <li>
+                <p>
+                  Temporibus praesentium reiciendis amet odit ducimus! Deserunt.
+                </p>
+              </li>
+            </ul>
+          </div>
+          <div class="card-footer">
+            <div class="d-flex">
+              <span class="bg-success mx-2 rounded">
+                <a href="#" class="btn text-light">Contact Us</a>
+              </span>
+              <span class="bg-mutted mx-2 rounded">
+                <a href="#" class="btn btn-block text-dark">T's & C's</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="col-sm"><% include ../pledge/pledgeForm %></div>
+</div>

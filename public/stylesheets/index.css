@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;400&display=swap');
+
+.index-cont {
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: auto;
+    margin-top: 4rem;
+}
+
+.card {
+    position: relative;
+    padding: 0.5rem;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+    color: #ffffff;
+    background: #18bc9c;
+    -webkit-transition: background-color 1.5s ease-out;
+    -moz-transition: background-color 1.5s ease-out;
+    -o-transition: background-color 1.5s ease-out;
+    transition: background-color 1.5s ease-out;
+    -webkit-box-shadow: 15px 10px 20px 2px rgba(0, 0, 0, 0.55);
+    -moz-box-shadow: 15px 10px 20px 2px rgba(0, 0, 0, 0.55);
+    box-shadow: 15px 10px 20px 2px rgba(0, 0, 0, 0.55);
+}
+
+.card:before,
+.card:after {
+    z-index: -1;
+    position: absolute;
+    content: "";
+    bottom: 25px;
+    left: 10px;
+    right: 10px;
+    width: 50%;
+    top: 80%;
+    max-width: 300px;
+    -webkit-box-shadow: 0 35px 20px #777;
+    -moz-box-shadow: 0 35px 20px #777;
+    box-shadow: 0 35px 20px #777;
+    -webkit-transform: rotate(-8deg);
+    -moz-transform: rotate(-8deg);
+    -o-transform: rotate(-8deg);
+    -ms-transform: rotate(-8deg);
+    transform: rotate(-8deg);
+}
+
+.card i {
+    color: #d4d111;
+}
+
+.card a {
+    text-emphasis: none;
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.card:hover a {
+    text-emphasis: none;
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.card:hover {
+    color: #ffffff;
+    background: #2c3e50;
+    -webkit-transition: background-color 1.5s ease-out;
+    -moz-transition: background-color 1.5s ease-out;
+    -o-transition: background-color 1.5s ease-out;
+    transition: background-color 1.5s ease-out;
+    cursor: pointer;
+}
+
+.about-image {
+    position: relative;
+    -webkit-box-shadow: 15px 10px 20px 2px rgba(0, 0, 0, 0.55);
+    -moz-box-shadow: 15px 10px 20px 2px rgba(0, 0, 0, 0.55);
+    box-shadow: 15px 10px 20px 2px rgba(0, 0, 0, 0.55);
+}
+
+.about-image:before,
+.about-image:after {
+    z-index: -1;
+    position: absolute;
+    content: "";
+    bottom: 25px;
+    left: 10px;
+    right: 50px;
+    width: 50%;
+    top: 80%;
+    max-width: 300px;
+    background: #777;
+    -webkit-box-shadow: 0 35px 20px #777;
+    -moz-box-shadow: 0 35px 20px #777;
+    box-shadow: 0 35px 20px #777;
+    -webkit-transform: rotate(-8deg);
+    -moz-transform: rotate(-8deg);
+    -o-transform: rotate(-8deg);
+    -ms-transform: rotate(-8deg);
+    transform: rotate(-8deg);
+}
+
+.about-image:hover {
+    transform: scale(1.05);
+    transition: 2s ease;
+}
+
+.about-section h1 {
+    padding: .5em;
+    color: #000000;
+    font-size: 3em;
+    font-weight: 900;
+    font-family: 'Times New Roman',
+        Times,
+        serif;
+    text-transform: capitalize;
+}
+
+.about-section p {
+    color: #000000;
+    font-size: 1.3em;
+    font-family: 'Raleway', sans-serif;
+}
+
+.filler-section {
+    background: url('https://images.pexels.com/photos/1139317/pexels-photo-1139317.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260');
+    height: 50vh;
+    background-position: center;
+    background-attachment: fixed;
+    opacity: 0.7;
+}
+
+.filler-section h4 {
+    padding: 3.5rem 0;
+    color: #ffffff;
+    font-weight: 900;
+    font-size: 1.5em;
+    font-family: 'Raleway', sans-serif;
+}
+
+.info-section h1 {
+    padding: .5em;
+    color: #000000;
+    font-size: 3em;
+    font-weight: 900;
+    font-family: 'Times New Roman',
+        Times,
+        serif;
+    text-transform: capitalize;
+}
+
+.info-section p {
+    padding: .5em;
+    color: #000000;
+    font-size: 1.3em;
+    font-family: 'Raleway', sans-serif;
+}

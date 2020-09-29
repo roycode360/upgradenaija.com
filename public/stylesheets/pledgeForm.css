@@ -1,0 +1,7 @@
+.form-box input {
+    padding: 5px 20px;
+}
+
+.msg-matched {
+    color: orangered;
+}

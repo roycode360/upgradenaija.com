@@ -1,0 +1,23 @@
+<div style="margin-top: 7rem" class="container">
+  <div class="row mt-5">
+    <% blog.forEach(blogs => { %>
+    <div class="col-sm mb-4 mx-auto">
+      <div class="card shadow-md">
+        <div class="card-img-top">
+          <img class="img-fluid" src="<%=blogs.image %>" alt="blog-img" />
+        </div>
+        <div class="card-body">
+          <h4 class="text-black py-1"><%=blogs.title %></h4>
+          <p class="lead m-2 text-muted">
+            <%=blogs.createdAt.toLocaleDateString()%>
+          </p>
+          <p class="lead py-2"><%=blogs.description %></p>
+        </div>
+        <a href="/blog/<%= blogs.slug %>" class="btn btn-primary p-2"
+          >Read more</a
+        >
+      </div>
+    </div>
+    <% }) %>
+  </div>
+</div>

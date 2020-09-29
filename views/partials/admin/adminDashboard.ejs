@@ -1,0 +1,57 @@
+<h4 class="admin-welcome">
+  Hello <%= adminName %>!
+</h4>
+<hr>
+
+<div class="admin-stats">
+  <div class="row">
+      <% include ./stats %>
+  </div>
+</div>
+
+<table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th class="th-sm"><b>Name</b>
+
+      </th>
+      <th class="th-sm"><b>Email</b>
+
+      </th>
+      <th class="th-sm"><b>Type</b>
+
+      </th>
+      <th class="th-sm"><b>Satus</b>
+
+      </th>
+      <th class="th-sm"><b>Amount</b>
+
+      </th>
+      <th class="th-sm"><b>Deadline</b>
+
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% include ./getusers %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th>Name
+      </th>
+      <th>Email
+      </th>
+      <th>Type
+      </th>
+      <th>Status
+      </th>
+      <th>Amount
+      </th>
+      <th>Deadline
+      </th>
+    </tr>
+  </tfoot>
+</table>
+
+<% include ../messages %>
+<div><% include ../match/matchForm %></div>

@@ -1,0 +1,23 @@
+.footer {
+  background-color: navy;
+  height: 100%;
+  width: 100%;
+}
+
+.footer-para {
+  padding: 2em;
+  font-family: 'Times New Roman', Times, serif;
+  font-style: italic;
+  color: #ffffff;
+}
+
+.footer-list {
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+  font-family: 'Times New Roman',
+    Times,
+    serif;
+  font-style: italic;
+
+}

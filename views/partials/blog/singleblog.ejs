@@ -1,0 +1,14 @@
+<div style="margin-top: 7rem" class="container-fluid">
+  <h3 class="mt-5"><%=blog.title%></h3>
+  <div>
+    <img
+      style="width: 100%; height: auto"
+      class="img-fluid mb-3"
+      src="<%= blog.image %>"
+      alt="..."
+    />
+  </div>
+  <h5 class="text-secondary"><%=blog.createdAt.toLocaleDateString()%></h5>
+  <p class="my-3 lead"><%=blog.description%></p>
+  <div><%- blog.sanitizedHtml%></div>
+</div>

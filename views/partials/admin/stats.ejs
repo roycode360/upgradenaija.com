@@ -1,0 +1,5 @@
+<div class="col-2" style="font-size: 13px;">Users:<br> <%= totalUsers %> | ₦<%= formatAmount(admin.totalAmount) %></div>
+<div class="col-3" style="font-size: 13px;">Pledge:<br> <%= dbPledgeInfo.count %> | ₦<%= dbPledgeInfo.totalAmount %></div>
+<div class="col-2" style="font-size: 13px;">Matched:<br> <%= dbMatchedInfo.count %> | ₦<%= dbMatchedInfo.totalAmount %></div>
+<div class="col-3" style="font-size: 13px;">Pending:<br> <%= dbPendingInfo.count %> | ₦<%= dbPendingInfo.totalAmount %></div>
+<div class="col-2" style="font-size: 13px;">Unpaid:<br> <%= dbUnpaidInfo.count %> | ₦<%= dbUnpaidInfo.totalAmount %></div>

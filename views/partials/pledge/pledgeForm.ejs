@@ -1,0 +1,60 @@
+<head>
+  <link rel="stylesheet" href="/stylesheets/pledgeForm.css" />
+</head>
+
+<body>
+  <div class="row my-5">
+    <div class="col-md-6" id="pledgeForm">
+      <div class="card card-body text-white bg-success">
+        <h3 class="text-center mb-3">
+          <i class="fas fa-envelop fa-1x text-light"></i><br />
+          Make A Pledge
+        </h3>
+
+        <form id="pledgeForm" action="/users/pledge" method="POST">
+          <div class="form-group">
+            <label for="name">Account Name</label>
+            <input type="text" id="accountName" name="accountName" class="form-control rounded px-3"
+              placeholder="Enter Account Name" required="true" />
+          </div>
+          <div class="form-group">
+            <label for="name">Account Number</label>
+            <input type="text" id="accountNumber" name="accountNumber" class="form-control rounded px-3"
+              placeholder="Enter Account Number" required="true" />
+          </div>
+          <div class="form-group">
+            <label for="name">Bank</label>
+            <input type="text" id="bank" name="bank" class="form-control rounded px-3"
+              placeholder="Enter Account Number" required="true" />
+          </div>
+          <div class="form-group">
+            <label for="contact">Phone Number<span class="">&#x1F4F1;</span></label>
+            <input type="contact" id="phoneNumber" name="phoneNumber" class="form-control rounded px-3"
+              placeholder="Phone Number" required="true" />
+          </div>
+          <div class="form-group">
+            <label for="pledgeAmount">Pledge Amount <span>&#x1F4B2;</span></label>
+            <input type="text" id="pledgeAmount" name="pledgeAmount" class="form-control text-white rounded px-3"
+              placeholder="Amount" required="true" />
+          </div>
+          <div class="form-group">
+            <label for="pledgeType">Pledge Type :</label><br>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="pledgeType" id="pledgeType" value="gold" required>
+              <label class="form-check-label" for="inlineRadio1">Gold</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="pledgeType" id="pledgeType" value="silver" required>
+              <label class="form-check-label" for="inlineRadio2">Silver</label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-block text-white">Pledge</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-6" id="viewMatched">
+      <% include ./getMatched %>
+    </div>
+  </div>
+</body>

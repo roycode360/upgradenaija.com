@@ -1,0 +1,72 @@
+<!-- initial message -->
+<% if (user.status === undefined) { %>
+    <div class="card card-body text-white bg-primary">
+        <h5 class="text-center mb-3">Status :  <span style="color: whitesmoke">No active transaction</span></h5>
+        <div class="col-sm">
+          <div class="card card-body bg-primary text-white p-4 mx-auto mb-3">
+            <p>Make a pledge today and get up to 100% profit!</p>
+          </div>
+        </div>
+      </div>
+<% } %>
+
+<!-- pledge message -->
+<% if (user.status === 'pledged') { %>
+    <div class="card card-body text-white bg-primary">
+        <h5 class="text-center mb-3">Status :  <span style="color: rgb(248, 104, 47)">Pledged!</span></h5>
+        <div class="col-sm">
+          <div class="card card-body bg-primary text-white p-4 mx-auto mb-3">
+            <p>Pledge successfull! You will be matched with a user before <%= user.deadline %></p>
+          </div>
+        </div>
+      </div>
+<% } %>
+
+<!-- matched message -->
+<% if (user.status === 'matched') { %>
+    <div class="card card-body text-white bg-primary">
+        <h5 class="text-center mb-3">Status :  <span style="color: rgb(199, 196, 24)">Matched!</span></h5>
+        <div class="col-sm">
+          <div class="card card-body bg-primary text-white p-4 mx-auto mb-3">
+            <p>You are to transfer funds to this user on or before :<br> <%= user.deadline %></p>
+            <p>NAME: <%= user.paymentDetails.payName %></p>
+            <p>ACCOUNT NUMBER: <%= user.paymentDetails.payAcc %></p>
+            <p>AMOUNT: <%= formatAmount(user.pledge.pledgeAmount) %></p>
+            <p>BANK: <%= user.paymentDetails.payBank %></p>
+            <p>PHONE NUMBER: <%= user.paymentDetails.payPhone %></p>
+          </div>
+        </div>
+      </div>
+<% } %>
+
+<!-- awaiting payment -->
+<% if (user.status === 'awaiting payment') { %>
+    <div class="card card-body text-white bg-primary">
+        <h5 class="text-center mb-3">Status :  <span style="color: rgb(150, 173, 48)">Awaiting Payment!</span></h5>
+        <div class="col-sm">
+          <div class="card card-body bg-primary text-white p-4 mx-auto mb-3">
+            <p>Your pledge has been confirmed and you will be matched to recieve payment on or before :<br> <%= user.deadline %> ( <%= user.pledge.pledgeType.toUpperCase() %>)</p>
+          </div>
+        </div>
+      </div>
+<% } %>
+
+<!-- expecting payment -->
+<% if (user.status === 'expecting payment') { %>
+    <div class="card card-body text-white bg-primary">
+        <h5 class="text-center mb-3">Status :  <span style="color: rgb(95, 235, 60)">Expecting Payment!</span></h5>
+        <div class="col-sm">
+          <div class="card card-body bg-primary text-white p-4 mx-auto mb-3">
+            <% user.expectedFunds.users.forEach((cur, ind, arr) => { %>
+                <p>You will recieve payment from this user on or before :<br> <%= user.deadline %></p>
+                <p>NAME: <%= cur.senderName %></p>
+                <p>AMOUNT: <%= formatAmount(cur.senderAmount) %></p>
+                <p>PHONE NUMBER: <%= cur.senderNumber %></p>
+                <form id="confirmPledge" action=<%= `/users/pledge/confirm?num=${ind}` %>  method="POST">
+                  <button type="submit" class="btn btn-success">Confirm</button>
+                </form>
+            <% }) %>
+          </div>
+        </div>
+      </div>
+<% } %>
