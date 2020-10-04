@@ -24,7 +24,7 @@ const UserSchema = new mongoose.Schema({
     type: String
   },
   amount: {
-    type: String,
+    type: Number,
     default: 0
   },
   paymentDetails: {
@@ -59,7 +59,8 @@ const UserSchema = new mongoose.Schema({
       type: String
     },
     pledgeAmount: {
-      type: String
+      type: Number,
+      default: 0
     },
     pledgeType: {
       type: String
@@ -74,10 +75,12 @@ const UserSchema = new mongoose.Schema({
         type: String
       },
       senderAmount: {
-        type: String
+        type: Number,
+        default: 0
       },
       payed: {
-        type: Boolean
+        type: Boolean,
+        default: false
       },
       identification: {
         type: mongoose.Schema.Types.ObjectId
@@ -85,20 +88,22 @@ const UserSchema = new mongoose.Schema({
     }],
     statistics: {
       pledged: {
-        type: String
+        type: Number,
+        default: 0
       },
       type: {
         type: String
       },
       expect: {
-        type: String
+        type: Number,
+        default: 0
       },
       matched: {
-        type: String,
+        type: Number,
         default: 0
       },
       gotten: {
-        type: String,
+        type: Number,
         default: 0
       }
     }

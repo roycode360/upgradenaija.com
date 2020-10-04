@@ -13,6 +13,7 @@
     <td><b><%= user.pledge.pledgeType %></b></td>
     <td><%= user.status %></td>
     <td><b><%= formatAmount(user.amount) %></b></td>
-    <td><%= user.deadline %></td>
+    <td><%= formatAmount(user.expectedFunds.statistics.matched) %></td>
+    <td><b><%= user.deadline %></b></td>
   </tr>
 <% }) %>

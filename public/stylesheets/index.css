@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;400&display=swap');
 
+.body {
+    background-color: #F5F5F5 !important;
+}
+
 .index-cont {
     background-repeat: no-repeat;
     background-size: cover;

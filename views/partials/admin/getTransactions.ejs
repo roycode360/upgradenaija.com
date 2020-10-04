@@ -1,0 +1,10 @@
+<% transactions.forEach(transaction => { %>
+    <tr>
+      <td><b><%= transaction.senderEmail %></b></td>
+      <td><%= transaction.recieverEmail %></td>
+      <td><b><%= formatAmount(transaction.amountSent) %></b></td>
+      <td><%= transaction.senderPledgeType %></td>
+      <td><b><%= transaction.recieverPledgeType %></b></td>
+      <td><%= formatDate(transaction.dateOfTransaction) %></td>
+    </tr>
+  <% }) %>

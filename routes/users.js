@@ -145,6 +145,9 @@ router.post("/pledge", ensureAuthenticated, async (req, res) => {
     // set deadline
     req.user.deadline = deadline('pledged');
 
+    // set expected amount
+    req.user.expectedFunds.statistics.expect = profit(req.user.pledge.pledgeType, req.user.pledge.pledgeAmount);
+
     // Save user
     await req.user.save();
     req.flash( "success_msg", "Request successful! You would be matched with a user within 24 hours");
@@ -156,7 +159,7 @@ router.post("/pledge", ensureAuthenticated, async (req, res) => {
 router.post("/pledge/confirm", ensureAuthenticated, async (req, res) => {
   try {
     const senderId = req.user.expectedFunds.users[req.query.num].identification;
-    const sender = await User.findOne({ _id: senderId })
+    const sender = await User.findOne({ _id: senderId });
     
     // update sender details
     // update progress
@@ -179,7 +182,7 @@ router.post("/pledge/confirm", ensureAuthenticated, async (req, res) => {
     const transaction = new Transaction({
       senderEmail: sender.email,
       recieverEmail: req.user.email,
-      amountSent: parseInt(req.user.expectedFunds.users[req.query.num].senderAmount),
+      amountSent: req.user.expectedFunds.users[req.query.num].senderAmount,
       senderPledgeType: sender.pledge.pledgeType,
       recieverPledgeType: req.user.pledge.pledgeType,
       dateOfTransaction: new Date()
@@ -189,12 +192,12 @@ router.post("/pledge/confirm", ensureAuthenticated, async (req, res) => {
 
     // update total amount field in admin
     const admin = await Admin.findOne({admin: true});
-    admin.totalAmount += parseInt(req.user.expectedFunds.users[req.query.num].senderAmount);
+    admin.totalAmount += req.user.expectedFunds.users[req.query.num].senderAmount;
     // save admin
     await admin.save();
 
     // update user details
-    if(req.user.expectedFunds.users.length === 1) {
+    if((req.user.expectedFunds.statistics.matched === req.user.expectedFunds.statistics.expect) && req.user.expectedFunds.users.length === 1) {
       // this means all funds have been confirmed
       // empty paymentDetails
       req.user.paymentDetails = {};
@@ -208,7 +211,10 @@ router.post("/pledge/confirm", ensureAuthenticated, async (req, res) => {
       // empty pledge
       req.user.pledge = {};
       // empty fund statistics
-      req.user.expectedFunds.statistics = {};
+      req.user.expectedFunds.statistics = {
+        matched: 0,
+        expect: 0
+      };
       // set status to undefined
       req.user.status = undefined;
       // set deadline to undefined
@@ -230,7 +236,7 @@ router.post("/pledge/confirm", ensureAuthenticated, async (req, res) => {
       // update status
       req.user.status = 'expecting payment';
       // update amount
-      req.user.amount = parseInt(req.user.amount) - parseInt(req.user.expectedFunds.users[req.query.num].senderAmount);
+      req.user.amount = req.user.amount - req.user.expectedFunds.users[req.query.num].senderAmount;
       // remove user
       req.user.expectedFunds.users.splice(req.query.num, 1);
     };

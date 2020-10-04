@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const currencyFormatter = require('currency-formatter');
+const dateFormat = require('dateformat');
 const User = require("../models/User");
 const { getDatabaseStats } = require('./stats/dbStats');
 const { preAuthenticated, ensureAuthenticated } = require("../config/auth");
@@ -26,15 +27,18 @@ router.get("/dashboard", ensureAuthenticated, async (req, res) => {
 
 // get dashboard for admin
 router.get("/admin", preAuthenticated, async (req, res) => {
-  const { admin, users, totalUsers, dbPledgeInfo, dbMatchedInfo, dbPendingInfo, dbUnpaidInfo } = await getDatabaseStats();
+  const { admin, users, transactions, totalUsers, dbPledgeInfo, dbMatchedInfo, dbPendingInfo, dbUnpaidInfo } = await getDatabaseStats();
   const adminName = admin.name.split(' ')[0];
   const formatAmount = (amount) => currencyFormatter.format(amount,  { code: 'NG' });
+  const formatDate = (date) => dateFormat(date);
   res.render("admin", {
     // admin: req.user, used later DO NOT REMOVE!
     admin,
     adminName,
     users,
+    transactions,
     formatAmount,
+    formatDate,
     totalUsers,
     dbPledgeInfo, 
     dbMatchedInfo,

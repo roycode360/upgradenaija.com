@@ -1,12 +1,14 @@
 var currencyFormatter = require('currency-formatter');
+const dateFormat = require('dateformat');
 const User = require('../../models/User');
 const Admin = require('../../models/Admin');
+const Transactions = require('../../models/Transactions')
 const date = require('date-and-time');
 
 const getAmount = (arr) => {
     let add = 0;
     arr.forEach(cur => {
-        add += parseInt(cur.amount);
+        add += cur.amount;
     });
     return currencyFormatter.format(add,  { code: 'NG' });
 }
@@ -14,6 +16,7 @@ const getAmount = (arr) => {
 getDatabaseStats = async () => {
     const admin = await Admin.findOne({admin: true});
     const users = await User.find();
+    const transactions = await Transactions.find();
     const totalUsers = await User.find().countDocuments();
     const totalPledge = await User.find({ status: 'pledged'});
     const totalMatched = await User.find({ status: 'matched'});
@@ -43,6 +46,7 @@ getDatabaseStats = async () => {
     return {
         admin,
         users,
+        transactions,
         totalUsers,
         dbPledgeInfo,
         dbMatchedInfo,
@@ -73,14 +77,15 @@ const deadline = (progress, type) => {
 
 const profit = (type, amount) => {
     if (type.toLowerCase() === 'gold') {
-        return parseInt(amount) * 0.5;
+        return amount + (amount * 0.5);
     } else {
-        return (parseInt(amount) * 0.25) + parseInt(amount);
+        return amount + (amount * 0.25);
     }
 };
 
 const calcMatched = (init, cur) => {
-    return parseInt(init) + parseInt(cur);
+    const match = init + cur;
+    return match
 }
 
 module.exports = {
