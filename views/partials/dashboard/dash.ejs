@@ -9,13 +9,9 @@
       </caption>
     </h3>
 
-    <p class="text-capitalize text-dark m-auto py-3 text-center">
-      <q>
-        Sequi aut commodi, quibusdam provident eveniecommodi numquam possimus
-        id, qui eligendi hic sapiente!
-      </q>
-      <br />
-      <cite class="text-right">-lorem-</cite>
+    <p class="text-dark m-auto py-3 text-center">
+        Your promo code is: <span style="color: rgb(221, 48, 29); font-size: large;"><%= user.promo_code %></span><br>
+        Use this code to invite members and get 5% of thier first deposits.
     </p>
   </header>
   <% include ../messages %>
@@ -27,15 +23,20 @@
             <p class="text-center mt-2 lead">
               <i class="fas fa-volume-up fa-1x text-light"></i>
               <br />
-              <b class="mt-3"> Pledge to finance someone's Dream </b>
+              <b class="mt-3"> Make a pledge today and start earning! </b>
             </p>
           </div>
           <div class="card-body">
+            <p>Welcome to your dashboard <%= user.name.split(' ')[0] %>! quickly fill in the pledge form to start the
+              process of earning from your investments.<br>
+              <br>
+              The table below shows your current referral list and their payment status. You will recieve your referral
+              bonus on successful confirmation of their first pledge!<br>
+              <br>
+              <b>Note that you only qualify for referral bonuses after making your first successful investment!</b>
+            </p>
             <p class="lead">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel
-              facilis eius fugiat illum expedita, perspiciatis repellat
-              molestias totam quae dignissimos beatae nulla modi maiores laborum
-              quo ullam? Ipsa, maiores facilis?
+              <% include ./getReferral %>
             </p>
           </div>
           <div class="card-footer">
@@ -44,9 +45,7 @@
                 <a href="#pledgeForm" class="btn text-white">Pledge Now</a>
               </span>
               <span class="bg-primary mx-2 rounded">
-                <a href="#viewMatched" class="btn btn-block text-white"
-                  >View Matched</a
-                >
+                <a href="#viewMatched" class="btn btn-block text-white">View Matched</a>
               </span>
             </div>
           </div>
@@ -65,23 +64,46 @@
             <ul>
               <li>
                 <p>
-                  delectus nam fuga autem doloribus provident natus aspernatur.
+                  Fill the pledge form below to start your investment process.
                 </p>
               </li>
               <li>
                 <p>
-                  excepturi facere ratione, aliquam nesciunt tempora consectetur
-                  adipisicing.
+                  The account details provided in the form will be the one used to recieve funds for each transaction,
+                  so ensure to provide the right account details.
                 </p>
               </li>
               <li>
                 <p>
-                  commodi quod sint sed et asperiores laboriosam reiciendis,
+                  Gold investors recieve 50% profit in one month, silver investors recieve 25% profit in two weeks and
+                  bitcoin investors recieve 30% profit in one month.
                 </p>
               </li>
               <li>
                 <p>
-                  Temporibus praesentium reiciendis amet odit ducimus! Deserunt.
+                  Limits of pledge amounts for the different investment plans. For each plan ensure to stay within the
+                  specified limit to avoid cancelled investments<br>
+                  Gold Plan: ₦20,000 - ₦500,000<br>
+                  Silver Plan: ₦10,000 - ₦200,000<br>
+                  Bitcoin Plan: $100 - $,1000<br>
+                </p>
+              </li>
+              <li>
+                <p>
+                  Once a pledge is made, you will be matched with a member within 24 hours after which you are to
+                  provide to that member within the next 24 hours (after being matched), to avoid cancelled investment.
+                </p>
+              </li>
+              <li>
+                <p>
+                  After a member confirms your pledge, you will have to wait the maturity period of your investment,
+                  depending on the plan choosen and once this period is over, you will be matched with a member (or
+                  members) that would provide the expected amount of help to you, within 24 hours.
+                </p>
+              </li>
+              <li>
+                <p>
+                  To resolve issues like unpaid funds, delayed confirmation of funds by members and more, simply contact the admin on any of the available platforms (Telegram & Instagram).
                 </p>
               </li>
             </ul>

@@ -1,0 +1,17 @@
+<% users.forEach(user => { %>
+    <% if (!(user.referralBonus.accName)) return %>
+    <tr>
+        <td><b><%= user.name %></b></td>
+        <td><b><%= user.referralBonus.accName %></b></td>
+        <td><b><%= user.referralBonus.accNumber %></b></td>
+        <td><b><%= formatAmount(user.referralBonus.amount) %></b></td>
+        <td><b>
+            <form id="removeReferrer" action=<%= `/admin/removeReferrer?num=${user._id}` %> method="POST">
+                <button type="submit" class="btn btn-primary btn-sm text-black">X</button>
+            </form>
+        </b></td>
+    </tr>
+<% }) %>
+
+
+

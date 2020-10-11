@@ -18,8 +18,11 @@ router.get("/services", (req, res) => res.render("services"));
 // get dashbord for user 
 router.get("/dashboard", ensureAuthenticated, async (req, res) => {
   const formatAmount = (amount) => currencyFormatter.format(amount,  { code: 'NG' });
+  const referrals = await User.find({ referral_code: req.user.promo_code });
   res.render("dashboard", {
     user: req.user,
+    referrals,
+    currencyFormatter,
     deadline,
     formatAmount
   }); 
@@ -28,13 +31,11 @@ router.get("/dashboard", ensureAuthenticated, async (req, res) => {
 // get dashboard for admin
 router.get("/admin", preAuthenticated, async (req, res) => {
   const { admin, users, transactions, totalUsers, dbPledgeInfo, dbMatchedInfo, dbPendingInfo, dbUnpaidInfo } = await getDatabaseStats();
-  const adminName = admin.name.split(' ')[0];
-  const formatAmount = (amount) => currencyFormatter.format(amount,  { code: 'NG' });
+  const formatAmount = (amount) => currencyFormatter.format(amount, 'NG');
   const formatDate = (date) => dateFormat(date);
   res.render("admin", {
     // admin: req.user, used later DO NOT REMOVE!
     admin,
-    adminName,
     users,
     transactions,
     formatAmount,

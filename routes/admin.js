@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+const currencyFormatter = require('currency-formatter');
 const passport = require("passport");
 const date = require('date-and-time');
 const Admin = require("../models/Admin");
@@ -183,8 +184,6 @@ router.post("/match", preAuthenticated, async (req, res) => {
     const x = reciever.expectedFunds.statistics.matched;
     const y = sender.pledge.pledgeAmount;
     const z = reciever.expectedFunds.statistics.expect;
-    const w = reciever.amount;
-    console.log(x, y, z, w);
     if ((x + y) > z) {
       throw new Error(`₦${(reciever.expectedFunds.statistics.matched + sender.pledge.pledgeAmount) - reciever.expectedFunds.statistics.expect} above ${reciever.name.toUpperCase()} expected match amount!`);
     }
@@ -194,7 +193,8 @@ router.post("/match", preAuthenticated, async (req, res) => {
       pledged: reciever.pledge.pledgeAmount,
       type: reciever.pledge.pledgeType,
       expect: profit(reciever.pledge.pledgeType, reciever.pledge.pledgeAmount),
-      matched: calcMatched(reciever.expectedFunds.statistics.matched, sender.pledge.pledgeAmount)
+      matched: calcMatched(reciever.expectedFunds.statistics.matched, sender.pledge.pledgeAmount),
+      gotten: reciever.expectedFunds.statistics.gotten
     }
     // update amount
     if (reciever.status !== 'expecting payment') {
@@ -213,7 +213,6 @@ router.post("/match", preAuthenticated, async (req, res) => {
     res.redirect("/admin");
 
   } catch (e) {
-    console.log(e)
     req.flash("error_msg", `${e}`);
     res.redirect("/admin");
   }
@@ -261,7 +260,6 @@ router.post('/actions', preAuthenticated, async (req, res) => {
         reciever.status = 'awaiting payment';
       }
       reciever.expectedFunds.users.forEach((cur, ind) => {
-        console.log(sender._id, cur.identification)
         if (sender._id.toString() === cur.identification.toString()) {
           reciever.expectedFunds.users.splice(ind, 1);
           reciever.expectedFunds.statistics.matched = reciever.expectedFunds.statistics.matched - cur.senderAmount;
@@ -275,7 +273,6 @@ router.post('/actions', preAuthenticated, async (req, res) => {
       if ((reciever.expectedFunds.statistics.matched === reciever.expectedFunds.statistics.expect) && req.user.expectedFunds.users.length === 1) {
         // reciever updates
         reciever.paymentDetails = {};
-        reciever.pledge = {};
         reciever.progress = {
           matched: false,
           matchedFund: false,
@@ -287,7 +284,7 @@ router.post('/actions', preAuthenticated, async (req, res) => {
         reciever.deadline = undefined;
         reciever.expectedFunds.statistics = {
           matched: 0,
-          expect: 0
+          expect: 0,
         };
       } else {
         reciever.progress = {
@@ -297,6 +294,10 @@ router.post('/actions', preAuthenticated, async (req, res) => {
           awaitingFund: false
         }
         reciever.status = 'expecting payment';
+        // update amount user has been paid so far
+        reciever.expectedFunds.statistics.gotten += sender.pledge.pledgeAmount;
+        // update amount
+        reciever.amount = reciever.amount - sender.pledge.pledgeAmount;
       }
       // sender updates
       // update progress
@@ -315,14 +316,20 @@ router.post('/actions', preAuthenticated, async (req, res) => {
       // update amount
       sender.amount = profit(sender.pledge.pledgeType, sender.pledge.pledgeAmount);
 
+      // update referral payment
+      const referrer = await User.findOne({
+        promo_code: sender.referral_code
+      });
+      if (referrer) {
+        sender.referralBonus.accName = referrer.pledge.accName;
+        sender.referralBonus.accNumber = referrer.pledge.accNumber;
+        sender.referralBonus.accType = referrer.pledge.accType;
+        sender.referralBonus.amount = (20000 * 0.05);
+      }
+
       reciever.expectedFunds.users.forEach(async (cur, ind) => {
-        console.log(sender._id, cur.identification)
         if (sender._id.toString() === cur.identification.toString()) {
           notFound = false;
-          // update amount user has been paid so far
-          reciever.expectedFunds.statistics.gotten = reciever.expectedFunds.users[ind].senderAmount;
-          // update amount
-          reciever.amount = reciever.amount - reciever.expectedFunds.users[ind].senderAmount;
           // create a new transaction model and save this confirmed transaction
           const transaction = new Transaction({
             senderEmail: sender.email,
@@ -344,20 +351,40 @@ router.post('/actions', preAuthenticated, async (req, res) => {
           await admin.save();
           // delete sender from reciver's list of unpaid transactions
           reciever.expectedFunds.users.splice(ind, 1);
+
+          // save both users
+          await sender.save();
+          await reciever.save();
         };
       })
       if (notFound) {
         throw new Error(`${reciever.name.toUpperCase()}  is not expecting any funds from ${sender.name.toUpperCase()}`)
       }
     }
-    // save both users
-    await sender.save();
-    await reciever.save();
-    
+
     req.flash("success_msg", "Action complete!");
     res.redirect('/admin');
   } catch (e) {
     req.flash("error_msg", `${e}`)
+    res.redirect('/admin');
+  }
+})
+
+// remove referral
+router.post('/removeReferrer', preAuthenticated, async (req, res) => {
+  try {
+    const user = await User.findOne({
+      _id: req.query.num
+    });
+    user.referralBonus = undefined;
+    user.referral_code = undefined;
+
+    await user.save();
+
+    req.flash("success_msg", "Referral removed!");
+    res.redirect('/admin');
+  } catch (e) {
+    req.flash("error_msg", `${e}`);
     res.redirect('/admin');
   }
 })

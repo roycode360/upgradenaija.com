@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const date = require('date-and-time');
 const currencyFormatter = require('currency-formatter');
+const shortid = require('shortid');
 const User = require("../models/User");
 const Admin = require('../models/Admin');
 const Transaction = require('../models/Transactions');
@@ -24,81 +25,91 @@ router.get("/register", forwardAuthenticated, (req, res) =>
 );
 
 // Register
-router.post("/register", (req, res) => {
-  const {
-    name,
-    email,
-    password,
-    password2
-  } = req.body;
-  let errors = [];
-
-  if (!name || !email || !password || !password2) {
-    errors.push({
-      msg: "Please enter all fields",
-    });
-  }
-
-  if (password != password2) {
-    errors.push({
-      msg: "Passwords do not match",
-    });
-  }
-
-  if (password.length < 6) {
-    errors.push({
-      msg: "Password must be at least 6 characters",
-    });
-  }
-
-  if (errors.length > 0) {
-    res.render("register", {
-      errors,
+router.post("/register", async (req, res) => {
+  try {
+    const {
       name,
       email,
       password,
       password2,
-    });
-  } else {
-    User.findOne({
-      email: email,
-    }).then((user) => {
-      if (user) {
-        errors.push({
-          msg: "Email already exists",
-        });
-        res.render("register", {
-          errors,
-          name,
-          email,
-          password,
-          password2,
-        });
-      } else {
-        const newUser = new User({
-          name,
-          email,
-          password,
-        });
-
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(newUser.password, salt, (err, hash) => {
-            if (err) throw err;
-            newUser.password = hash;
-            newUser
-              .save()
-              .then((user) => {
-                req.flash(
-                  "success_msg",
-                  "You are now registered and can log in"
-                );
-                res.redirect("/users/login");
-              })
-              .catch((err) => console.log(err));
+      referral_code
+    } = req.body;
+    let referralObjId;
+    const invite = await User.findOne({ promo_code: referral_code });
+    if (invite) {
+      referralObjId = invite._id;
+    }
+    if (referral_code && !invite) {
+      throw new Error(`Invalid referrer code!`);
+    }
+    let errors = [];
+  
+    if (!name || !email || !password || !password2) {
+      errors.push({
+        msg: "Please enter all fields",
+      });
+    }
+  
+    if (password != password2) {
+      errors.push({
+        msg: "Passwords do not match",
+      });
+    }
+  
+    if (password.length < 6) {
+      errors.push({
+        msg: "Password must be at least 6 characters",
+      });
+    }
+  
+    if (errors.length > 0) {
+      res.render("register", {
+        errors,
+        name,
+        email,
+        password,
+        password2,
+      });
+    } else {
+      User.findOne({
+        email: email,
+      }).then((user) => {
+        if (user) {
+          errors.push({
+            msg: "Email already exists",
           });
-        });
-      }
-    });
+          res.render("register", {
+            errors,
+            name,
+            email,
+            password,
+            password2,
+          });
+        } else {
+          const newUser = new User({
+            name,
+            email,
+            password,
+            referral_code,
+            promo_code: `${name.split(' ')[0]}/${shortid.generate()}`,
+            referralId: referralObjId
+          });
+  
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, async (err, hash) => {
+              if (err) throw err;
+              newUser.password = hash;
+              await newUser.save()
+                  req.flash("success_msg", "You are now registered and can log in");
+                  res.redirect("/users/login");
+            });
+          });
+        }
+      });
+    }
+  } catch (e) {
+    req.flash("error_msg", `${e}`);
+    res.redirect("/users/register");
   }
 });
 
@@ -120,7 +131,7 @@ router.get("/logout", (req, res) => {
 
 // post to pledge
 router.post("/pledge", ensureAuthenticated, async (req, res) => {
-  if (req.user.progress.pledge === true) {
+  if (req.user.status === 'pledged' || req.user.status === 'matched' || req.user.status === 'awaiting payment' || req.user.status === 'expecting payment') {
     // User in ongoing transaction
     req.flash("error_msg", "Unfinished transaction. You can't pledge again until after recieving funds for current pledge!");
     res.redirect('/dashboard')
@@ -128,6 +139,7 @@ router.post("/pledge", ensureAuthenticated, async (req, res) => {
     // Update user pledge info
     req.user.pledge.accName = req.body.accountName;
     req.user.pledge.accNumber = req.body.accountNumber;
+    req.user.pledge.accType = req.body.accountType;
     req.user.pledge.bank = req.body.bank;
     req.user.pledge.phoneNo = req.body.phoneNumber;
     req.user.pledge.pledgeAmount = req.body.pledgeAmount;
@@ -177,6 +189,15 @@ router.post("/pledge/confirm", ensureAuthenticated, async (req, res) => {
 
     // update amount
     sender.amount = profit(sender.pledge.pledgeType, sender.pledge.pledgeAmount);
+
+    // update referral payment
+    const referrer = await User.findOne({promo_code: sender.referral_code});
+    if (referrer) {
+      sender.referralBonus.accName = referrer.pledge.accName;
+      sender.referralBonus.accNumber = referrer.pledge.accNumber;
+      sender.referralBonus.accType = referrer.pledge.accType;
+      sender.referralBonus.amount = (sender.pledge.pledgeAmount * 0.05);
+    }
 
     // create a new transaction model and save this confirmed transaction
     const transaction = new Transaction({
@@ -248,7 +269,6 @@ router.post("/pledge/confirm", ensureAuthenticated, async (req, res) => {
     req.flash("success_msg", "You have successfully confirmed the user!");
     res.redirect('/dashboard');
   } catch (e) {
-    console.log(e)
     req.flash("error_msg", "Unable to confirm user!");
     res.redirect('/dashboard');
   }

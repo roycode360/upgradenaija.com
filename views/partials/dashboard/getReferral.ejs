@@ -1,0 +1,25 @@
+<table id="dtBasicExampl" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th class="th-sm"><b>Name</b>
+
+            </th>
+            <th class="th-sm"><b>Amount(5%)</b>
+
+            </th>
+            <th class="th-sm"><b>Status</b>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <% referrals.forEach(user => { %>
+            <% (user.status === 'awaiting payment' || user.status === 'expecting payment') ? user.status = 'Confirmed' : user.status = ' ' %>
+        <tr>
+            <td><b><%= user.name %></b></td>
+            <td><%= currencyFormatter.format((user.pledge.pledgeAmount * 0.05), 'NG') %></td>
+            <td><b><%= user.status %></b></td>
+        </tr>
+        <% }) %>
+    </tbody>
+</table>

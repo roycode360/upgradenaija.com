@@ -1,4 +1,4 @@
-var currencyFormatter = require('currency-formatter');
+const currencyFormatter = require('currency-formatter');
 const dateFormat = require('dateformat');
 const User = require('../../models/User');
 const Admin = require('../../models/Admin');
@@ -64,11 +64,11 @@ const deadline = (progress, type) => {
         deadllineDay = `${deadllineArr[0]} ${deadllineArr[1]} ${deadllineArr[2]} ${deadllineArr[3]} ${deadllineArr[4]}`;
     } else if (progress === 'awaiting payment' && type === 'gold') {
         const now = new Date();
-        deadllineArr = date.addDays(now, + 13).toString().split(' ');
+        deadllineArr = date.addDays(now, + 30).toString().split(' ');
         deadllineDay = `${deadllineArr[0]} ${deadllineArr[1]} ${deadllineArr[2]} ${deadllineArr[3]} ${deadllineArr[4]}`;
     }  else if (progress === 'awaiting payment' && type === 'silver') {
         const now = new Date();
-        deadllineArr = date.addDays(now, + 30).toString().split(' ');
+        deadllineArr = date.addDays(now, + 13).toString().split(' ');
         deadllineDay = `${deadllineArr[0]} ${deadllineArr[1]} ${deadllineArr[2]} ${deadllineArr[3]} ${deadllineArr[4]}`;
     }
 

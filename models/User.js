@@ -13,6 +13,16 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  referral_code: {
+    type: String
+  },
+  promo_code: {
+    type: String
+  },
+  referralId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
   date: {
     type: Date,
     default: new Date(),
@@ -50,6 +60,9 @@ const UserSchema = new mongoose.Schema({
       type: String
     },
     accNumber: {
+      type: String
+    },
+    accType: {
       type: String
     },
     bank: {
@@ -124,6 +137,20 @@ const UserSchema = new mongoose.Schema({
     matchedFund: { 
       type: Boolean,
       default: false
+    }
+  },
+  referralBonus: {
+    accName: {
+      type: String
+    },
+    accNumber: {
+      type: String
+    },
+    accType: {
+      type: String
+    },
+    amount: {
+      type: Number
     }
   }
 });

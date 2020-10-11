@@ -24,8 +24,8 @@
           </div>
           <div class="form-group">
             <label for="name">Bank</label>
-            <input type="text" id="bank" name="bank" class="form-control rounded px-3"
-              placeholder="Enter Account Number" required="true" />
+            <input type="text" id="bank" name="bank" class="form-control rounded px-3" placeholder="Enter Bank Name"
+              required="true" />
           </div>
           <div class="form-group">
             <label for="contact">Phone Number<span class="">&#x1F4F1;</span></label>
@@ -34,18 +34,33 @@
           </div>
           <div class="form-group">
             <label for="pledgeAmount">Pledge Amount <span>&#x1F4B2;</span></label>
-            <input type="text" id="pledgeAmount" name="pledgeAmount" class="form-control text-white rounded px-3"
-              placeholder="Amount" required="true" />
+            <input type="number" id="pledgeAmount" name="pledgeAmount" class="form-control text-black rounded px-3"
+              placeholder="Amount" required="true" min="5000" max="500000" />
+          </div>
+          <div class="form-group">
+            <label for="pledgeType">Account Type :</label><br>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="accountType" id="accountType" value="Savings" required>
+              <label class="form-check-label" for="inlineRadio1">Savings</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="accountType" id="accountType" value="Current" required>
+              <label class="form-check-label" for="inlineRadio2">Current</label>
+            </div>
           </div>
           <div class="form-group">
             <label for="pledgeType">Pledge Type :</label><br>
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="pledgeType" id="pledgeType" value="gold" required>
-              <label class="form-check-label" for="inlineRadio1">Gold</label>
+              <label class="form-check-label" for="inlineRadio1">Gold (₦)</label>
             </div>
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="pledgeType" id="pledgeType" value="silver" required>
-              <label class="form-check-label" for="inlineRadio2">Silver</label>
+              <label class="form-check-label" for="inlineRadio2">Silver (₦)</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="pledgeType" id="pledgeType" value="bitcoin" disabled>
+              <label class="form-check-label" for="inlineRadio2">Bitcoin ($)</label>
             </div>
           </div>
 

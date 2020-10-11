@@ -4,7 +4,7 @@
         <h5 class="text-center mb-3">Status :  <span style="color: whitesmoke">No active transaction</span></h5>
         <div class="col-sm">
           <div class="card card-body bg-primary text-white p-4 mx-auto mb-3">
-            <p>Make a pledge today and get up to 100% profit!</p>
+            <p>Make a pledge today and get up to 50% profit!</p>
           </div>
         </div>
       </div>
@@ -31,7 +31,8 @@
             <p>You are to transfer funds to this user on or before :<br> <%= user.deadline %></p>
             <p>NAME: <%= user.paymentDetails.payName %></p>
             <p>ACCOUNT NUMBER: <%= user.paymentDetails.payAcc %></p>
-            <p>AMOUNT: <%= formatAmount(user.pledge.pledgeAmount) %></p>
+            <p>ACCOUNT Type: <%= user.pledge.accType  %> </p>
+            <p>AMOUNT: ₦<%= formatAmount(user.pledge.pledgeAmount) %></p>
             <p>BANK: <%= user.paymentDetails.payBank %></p>
             <p>PHONE NUMBER: <%= user.paymentDetails.payPhone %></p>
           </div>
@@ -60,7 +61,7 @@
             <% user.expectedFunds.users.forEach((cur, ind, arr) => { %>
                 <p>You will recieve payment from this user on or before :<br> <%= user.deadline %></p>
                 <p>NAME: <%= cur.senderName %></p>
-                <p>AMOUNT: <%= formatAmount(cur.senderAmount) %></p>
+                <p>AMOUNT: ₦<%= formatAmount(cur.senderAmount) %></p>
                 <p>PHONE NUMBER: <%= cur.senderNumber %></p>
                 <form id="confirmPledge" action=<%= `/users/pledge/confirm?num=${ind}` %>  method="POST">
                   <button type="submit" class="btn btn-success">Confirm</button>
