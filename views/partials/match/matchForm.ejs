@@ -10,7 +10,7 @@
           <span class="text-bold display-4 text-secondary">&#x2709;</span><br />
           Match Pledgers
         </h3>
-        <form id="matchForm" action="/admin/match" method="POST">
+        <form id="matchForm" action="/<%= `${process.env.ADMIN_ROUTE}` %>/match" method="POST">
           <div class="form-group">
             <label for="name">Sender's Email</label>
             <input type="email" id="S_email" name="S_email" class="form-control rounded px-3"
@@ -29,7 +29,7 @@
     <div class="col-md-6 mb-5">
       <div class="card card-body text-white bg-danger">
         <h4 class="text-center mb-1">Admin Actions</h4>
-        <form id="matchForm" action="/admin/actions" method="POST">
+        <form id="matchForm" action="/<%= `${process.env.ADMIN_ROUTE}` %>/actions" method="POST">
           <div class="form-group">
             <label for="name">Sender Email</label>
             <input type="email" id="S_email" name="S_email" class="form-control rounded px-3"

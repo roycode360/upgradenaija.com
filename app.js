@@ -82,7 +82,7 @@ app.use(methodOverride("_method"));
 //routes
 app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/users"));
-app.use("/admin", require("./routes/admin"));
+app.use(`/${process.env.ADMIN_ROUTE}`, require("./routes/admin"));
 app.use("/blog", require("./routes/blog"));
 
 // catch 404 and forward to error handler

@@ -20,13 +20,13 @@ module.exports = {
       return next();
     }
     req.flash("error_msg", "Please log in");
-    res.redirect("/admin/login");
+    res.redirect("/qZswQMj0I7/login");
   },
   postAuthenticated: function (req, res, next) {
     if (!req.isAuthenticated()) {
       return next();
     }
-    res.redirect("/admin");
+    res.redirect("/qZswQMj0I7");
   },
   // pledge auth
   checkAuthenticated: function (req, res, next) {
@@ -34,7 +34,7 @@ module.exports = {
       return next();
     }
     req.flash("error_msg", "You need to be logged in!");
-    res.redirect("/admin/login");
+    res.redirect("/qZswQMj0I7/login");
   },
   whenAuthenticated: function (req, res, next) {
     if (!req.isAuthenticated()) {

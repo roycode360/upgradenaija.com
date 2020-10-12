@@ -29,11 +29,11 @@ router.get("/dashboard", ensureAuthenticated, async (req, res) => {
 });
 
 // get dashboard for admin
-router.get("/admin", preAuthenticated, async (req, res) => {
+router.get(`/${process.env.ADMIN_ROUTE}`, preAuthenticated, async (req, res) => {
   const { admin, users, transactions, totalUsers, dbPledgeInfo, dbMatchedInfo, dbPendingInfo, dbUnpaidInfo } = await getDatabaseStats();
   const formatAmount = (amount) => currencyFormatter.format(amount, 'NG');
   const formatDate = (date) => dateFormat(date);
-  res.render("admin", {
+  res.render(`admin`, {
     // admin: req.user, used later DO NOT REMOVE!
     admin,
     users,

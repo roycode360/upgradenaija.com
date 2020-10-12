@@ -152,6 +152,9 @@ const UserSchema = new mongoose.Schema({
     amount: {
       type: Number
     }
+  },
+  admin: {
+    type: Boolean
   }
 });
 

@@ -13,6 +13,9 @@
         Your promo code is: <span style="color: rgb(221, 48, 29); font-size: large;"><%= user.promo_code %></span><br>
         Use this code to invite members and get 5% of thier first deposits.
     </p>
+    <% if (user.admin) { %>
+      <a href=<%= `/${process.env.ADMIN_ROUTE}` %> >Go to admin</a>
+    <% } %> 
   </header>
   <% include ../messages %>
   <section class="info-section">
@@ -75,21 +78,6 @@
               </li>
               <li>
                 <p>
-                  Gold investors recieve 50% profit in one month, silver investors recieve 25% profit in two weeks and
-                  bitcoin investors recieve 30% profit in one month.
-                </p>
-              </li>
-              <li>
-                <p>
-                  Limits of pledge amounts for the different investment plans. For each plan ensure to stay within the
-                  specified limit to avoid cancelled investments<br>
-                  Gold Plan: ₦20,000 - ₦500,000<br>
-                  Silver Plan: ₦10,000 - ₦200,000<br>
-                  Bitcoin Plan: $100 - $,1000<br>
-                </p>
-              </li>
-              <li>
-                <p>
                   Once a pledge is made, you will be matched with a member within 24 hours after which you are to
                   provide to that member within the next 24 hours (after being matched), to avoid cancelled investment.
                 </p>
@@ -111,7 +99,7 @@
           <div class="card-footer">
             <div class="d-flex">
               <span class="bg-success mx-2 rounded">
-                <a href="#" class="btn text-light">Contact Us</a>
+                <a href="#foo" class="btn text-light">Contact Us</a>
               </span>
               <span class="bg-mutted mx-2 rounded">
                 <a href="#" class="btn btn-block text-dark">T's & C's</a>
