@@ -213,7 +213,7 @@ router.post("/pledge/confirm", ensureAuthenticated, async (req, res) => {
 
     // update total amount field in admin
     const admin = await Admin.findOne({admin: true});
-    admin.totalAmount += req.user.expectedFunds.users[req.query.num].senderAmount;
+    admin.totalAmountNaira += req.user.expectedFunds.users[req.query.num].senderAmount;
     // save admin
     await admin.save();
 

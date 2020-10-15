@@ -21,7 +21,11 @@ const AdminSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
-  totalAmount: {
+  totalAmountDollar: {
+    type: Number,
+    default: 0
+  },
+  totalAmountNaira: {
     type: Number,
     default: 0
   },

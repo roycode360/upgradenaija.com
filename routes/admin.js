@@ -264,7 +264,7 @@ router.post('/actions', preAuthenticated, async (req, res) => {
           const admin = await Admin.findOne({
             admin: true
           });
-          admin.totalAmount += reciever.expectedFunds.users[ind].senderAmount;
+          admin.totalAmountNaira += reciever.expectedFunds.users[ind].senderAmount;
           // save admin
           await admin.save();
           // delete sender from reciver's list of unpaid transactions
@@ -390,7 +390,7 @@ router.post('/bitcoin/confirm', preAuthenticated, async (req, res) => {
       await transaction.save();
 
       // update total amount field in admin
-      admin.totalAmount += sender.expectedFunds.statistics.expect;
+      admin.totalAmountDollar += sender.expectedFunds.statistics.expect;
       // save admin
       await admin.save();
 
