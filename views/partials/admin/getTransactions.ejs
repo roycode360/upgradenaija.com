@@ -2,7 +2,12 @@
     <tr>
       <td><b><%= transaction.senderEmail %></b></td>
       <td><%= transaction.recieverEmail %></td>
-      <td><b><%= formatAmount(transaction.amountSent) %></b></td>
+      <%
+        let sign;
+        transaction.senderPledgeType === 'Bitcoin ID' ? sign = '$' : sign = '₦';
+        transaction.recieverPledgeType === 'Bitcoin ID' ? sign = '$' : sign = '₦';
+      %> 
+      <td><b><%= sign %><%= formatAmount(transaction.amountSent) %></b></td>
       <td><%= transaction.senderPledgeType %></td>
       <td><b><%= transaction.recieverPledgeType %></b></td>
       <td><%= formatDate(transaction.dateOfTransaction) %></td>

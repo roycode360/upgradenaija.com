@@ -11,15 +11,34 @@
 <% } %>
 
 <!-- pledge message -->
-<% if (user.status === 'pledged') { %>
+<% if (user.status === 'pledged' && user.pledge.pledgeType !== 'bitcoin') { %>
     <div class="card card-body text-white bg-primary">
         <h5 class="text-center mb-3">Status :  <span style="color: rgb(248, 104, 47)">Pledged!</span></h5>
         <div class="col-sm">
           <div class="card card-body bg-primary text-white p-4 mx-auto mb-3">
-            <p>Pledge successfull! You will be matched with a user before <%= user.deadline %></p>
+          <%
+            let sign;
+            user.pledge.pledgeType === 'bitcoin' ? sign = '$' : sign = '₦';
+          %>
+            <p>Your pledge of <b style="color: rgb(248, 104, 47);"><%= sign %> %= formatAmount(user.pledge.pledgeAmount) %></b> was successful!<br>
+            You will be matched with a user before <%= user.deadline %></p>
           </div>
         </div>
       </div>
+<% } %>
+
+<!-- Bitcoin pledge message -->
+<% if (user.status === 'pledged' && user.pledge.pledgeType === 'bitcoin') { %>
+  <div class="card card-body text-white bg-primary">
+      <h5 class="text-center mb-3">Status :  <span style="color: rgb(248, 104, 47)">Pledged!</span></h5>
+      <div class="col-sm">
+        <div class="card card-body bg-primary text-white p-4 mx-auto mb-3">
+          <p>You are to make payments to the following bitcoin wallet on or before <%= user.deadline %></p>
+          <p style="color: rgb(248, 104, 47);"><%= admin.walletID %> </p>
+          <p>AMOUNT: <b style="color: rgb(248, 104, 47);">$<%= formatAmount(user.pledge.pledgeAmount) %></b></p>
+        </div>
+      </div>
+    </div>
 <% } %>
 
 <!-- matched message -->
@@ -32,7 +51,7 @@
             <p>NAME: <%= user.paymentDetails.payName %></p>
             <p>ACCOUNT NUMBER: <%= user.paymentDetails.payAcc %></p>
             <p>ACCOUNT Type: <%= user.pledge.accType  %> </p>
-            <p>AMOUNT: ₦<%= formatAmount(user.pledge.pledgeAmount) %></p>
+            <p>AMOUNT: <b style="color: rgb(199, 196, 24);">₦<%= formatAmount(user.pledge.pledgeAmount) %></b></p>
             <p>BANK: <%= user.paymentDetails.payBank %></p>
             <p>PHONE NUMBER: <%= user.paymentDetails.payPhone %></p>
           </div>
@@ -46,7 +65,13 @@
         <h5 class="text-center mb-3">Status :  <span style="color: rgb(150, 173, 48)">Awaiting Payment!</span></h5>
         <div class="col-sm">
           <div class="card card-body bg-primary text-white p-4 mx-auto mb-3">
-            <p>Your pledge has been confirmed and you will be matched to recieve payment on or before :<br> <%= user.deadline %> ( <%= user.pledge.pledgeType.toUpperCase() %>)</p>
+            <%
+              let sign;
+              let msg;
+              user.pledge.pledgeType === 'bitcoin' ? sign = '$' : sign = '₦';
+              user.pledge.pledgeType === 'bitcoin' ? msg = '' : sign = 'be matched to';
+            %> 
+            <p>Your pledge has been confirmed and you will <%= msg  %> recieve payment of <b style="color: rgb(150, 173, 48);"><%= sign %><%= formatAmount(user.expectedFunds.statistics.expect) %></b> on or before :<br> <%= user.deadline %> ( <%= user.pledge.pledgeType.toUpperCase() %>)</p>
           </div>
         </div>
       </div>

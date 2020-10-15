@@ -17,7 +17,11 @@
             <% (user.status === 'awaiting payment' || user.status === 'expecting payment') ? user.status = 'Confirmed' : user.status = ' ' %>
         <tr>
             <td><b><%= user.name %></b></td>
-            <td><%= currencyFormatter.format((user.pledge.pledgeAmount * 0.05), 'NG') %></td>
+            <%
+                let sign;
+                user.pledge.pledgeType === 'bitcoin' ? sign = '$' : sign = '₦';
+            %> 
+            <td><%= sign %><%= currencyFormatter.format((user.pledge.pledgeAmount * 0.05), 'NG') %></td>
             <td><b><%= user.status %></b></td>
         </tr>
         <% }) %>

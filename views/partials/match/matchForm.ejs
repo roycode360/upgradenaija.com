@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="col-md-6 mb-5">
-      <div class="card card-body text-white bg-danger">
+      <div class="card card-body text-white bg-default">
         <h4 class="text-center mb-1">Admin Actions</h4>
         <form id="matchForm" action="/<%= `${process.env.ADMIN_ROUTE}` %>/actions" method="POST">
           <div class="form-group">
@@ -43,11 +43,47 @@
               <label class="form-check-label" for="inlineRadio1">Remove match</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="action_type" id="action-type" value="confirm user"
+              <input class="form-check-input" type="radio" name="action_type" id="action_type" value="confirm user"
                 required>
               <label class="form-check-label" for="inlineRadio2">Confirm user</label>
             </div>
             <button type="submit" class="btn btn-block text-white">Action</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-6 mb-5">
+      <div class="card card-body text-white bg-info">
+        <h4 class="text-center mb-1">Confirm Bitcoin Transactions</h4>
+        <form id="btcForm" action="/<%= `${process.env.ADMIN_ROUTE}` %>/bitcoin/confirm" method="POST">
+          <div class="form-group">
+            <label for="name">Sender Email</label>
+            <input type="email" id="S_email" name="S_email" class="form-control rounded px-3"
+              placeholder="Sender's email..." required="true" />
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="action_type" id="action_type" value="confirm transfer"
+                  required>
+                <label class="form-check-label" for="inlineRadio1">Confirm transfer</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="action_type" id="action_type" value="confirm payment"
+                  required>
+                <label class="form-check-label" for="inlineRadio2">Confirm payment</label>
+              </div>
+            <button type="submit" class="btn btn-block text-white">Confirm</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-6 mb-5">
+      <div class="card card-body text-white bg-default">
+        <h4 class="text-center mb-1">Change Bitcoin Wallet</h4>
+        <form id="btcForm" action="/<%= `${process.env.ADMIN_ROUTE}` %>/bitcoin/change" method="POST">
+          <div class="form-group">
+            <label for="name">Wallet ID</label>
+            <input type="text" id="btc_id" name="btc_id" class="form-control rounded px-3"
+              placeholder="ID value..." required="true" />
+            <button type="submit" class="btn btn-block text-white">Change</button>
           </div>
         </form>
       </div>

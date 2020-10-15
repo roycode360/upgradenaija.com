@@ -1,5 +1,5 @@
-<div class="col-2" style="font-size: 13px;">Users:<br> <%= totalUsers %> | ₦<%= formatAmount(admin.totalAmount) %></div>
-<div class="col-3" style="font-size: 13px;">Pledge:<br> <%= dbPledgeInfo.count %> | ₦<%= dbPledgeInfo.totalAmount %></div>
-<div class="col-2" style="font-size: 13px;">Matched:<br> <%= dbMatchedInfo.count %> | ₦<%= dbMatchedInfo.totalAmount %></div>
-<div class="col-3" style="font-size: 13px;">Pending:<br> <%= dbPendingInfo.count %> | ₦<%= dbPendingInfo.totalAmount %></div>
-<div class="col-2" style="font-size: 13px;">Unpaid:<br> <%= dbUnpaidInfo.count %> | ₦<%= dbUnpaidInfo.totalAmount %></div>
+<div class="col-2" style="font-size: 13px;">Users:<br> <%= totalUsers %> | ₦<%= formatAmount(admin.totalAmount) %><br>| | | $2,000</div>
+<div class="col-3" style="font-size: 13px;">Pledge:<br> <%= dbPledgeNaira.count %> | ₦<%= dbPledgeNaira.totalAmount %><br><%= dbPledgeDollar.count %> | $<%= dbPledgeDollar.totalAmount %></div>
+<div class="col-2" style="font-size: 13px;">Matched:<br> <%= dbMatchedNaira.count %> | ₦<%= dbMatchedNaira.totalAmount %><br><%= dbMatchedDollar.count %> | $<%= dbMatchedDollar.totalAmount %></div>
+<div class="col-3" style="font-size: 13px;">Pending:<br> <%= dbPendingNaira.count %> | ₦<%= dbPendingNaira.totalAmount %><br><%= dbPendingDollar.count %> | $<%= dbPendingDollar.totalAmount %></div>
+<div class="col-2" style="font-size: 13px;">Unpaid:<br> <%= dbUnpaidNaira.count %> | ₦<%= dbUnpaidNaira.totalAmount %><br><%= dbUnpaidDollar.count %> | $<%= dbUnpaidDollar.totalAmount %></div>

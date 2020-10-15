@@ -18,29 +18,49 @@ getDatabaseStats = async () => {
     const users = await User.find();
     const transactions = await Transactions.find();
     const totalUsers = await User.find().countDocuments();
-    const totalPledge = await User.find({ status: 'pledged'});
-    const totalMatched = await User.find({ status: 'matched'});
-    const totalPending = await User.find({ status: 'awaiting payment'});
-    const totalUnpaid = await User.find({ status: 'expecting payment'});
+    const totalPledgeNaira = await User.find({ status: 'pledged', $or: [{'pledge.pledgeType': 'silver'}, {'pledge.pledgeType': 'gold'}]});
+    const totalPledgeDollar = await User.find({ status: 'pledged', 'pledge.pledgeType': `bitcoin` });
+    const totalMatchedNaira = await User.find({ status: 'matched', $or: [{'pledge.pledgeType': 'silver'}, {'pledge.pledgeType': 'gold'}]});
+    const totalMatchedDollar = await User.find({ status: 'matched', 'pledge.pledgeType': `bitcoin` });
+    const totalPendingNaira = await User.find({ status: 'awaiting payment', $or: [{'pledge.pledgeType': 'silver'}, {'pledge.pledgeType': 'gold'}]});
+    const totalPendingDollar = await User.find({ status: 'awaiting payment', 'pledge.pledgeType': `bitcoin` });
+    const totalUnpaidNaira = await User.find({ status: 'expecting payment', $or: [{'pledge.pledgeType': 'silver'}, {'pledge.pledgeType': 'gold'}]});
+    const totalUnpaidDollar = await User.find({ status: 'expecting payment', 'pledge.pledgeType': `bitcoin` });
 
-    const dbPledgeInfo = {
-        count: totalPledge.length,
-        totalAmount: getAmount(totalPledge)
+    const dbPledgeNaira = {
+        count: totalPledgeNaira.length,
+        totalAmount: getAmount(totalPledgeNaira)
+    };
+    const dbPledgeDollar = {
+        count: totalPledgeDollar.length,
+        totalAmount: getAmount(totalPledgeDollar)
     };
 
-    const dbMatchedInfo = {
-        count: totalMatched.length,
-        totalAmount: getAmount(totalMatched)
+    const dbMatchedNaira = {
+        count: totalMatchedNaira.length,
+        totalAmount: getAmount(totalMatchedNaira)
+    }
+    const dbMatchedDollar = {
+        count: totalMatchedDollar.length,
+        totalAmount: getAmount(totalMatchedDollar)
     }
 
-    const dbPendingInfo = {
-        count: totalPending.length,
-        totalAmount: getAmount(totalPending)
+    const dbPendingNaira = {
+        count: totalPendingNaira.length,
+        totalAmount: getAmount(totalPendingNaira)
+    }
+    const dbPendingDollar = {
+        count: totalPendingDollar.length,
+        totalAmount: getAmount(totalPendingDollar)
     }
 
-    const dbUnpaidInfo = {
-        count: totalUnpaid.length,
-        totalAmount: getAmount(totalUnpaid)
+    const dbUnpaidNaira = {
+        count: totalUnpaidNaira.length,
+        totalAmount: getAmount(totalUnpaidNaira)
+    }
+    const dbUnpaidDollar = {
+        count: totalUnpaidDollar.length,
+        totalAmount: getAmount(totalUnpaidDollar)
     }
 
     return {
@@ -48,10 +68,14 @@ getDatabaseStats = async () => {
         users,
         transactions,
         totalUsers,
-        dbPledgeInfo,
-        dbMatchedInfo,
-        dbPendingInfo,
-        dbUnpaidInfo
+        dbPledgeNaira,
+        dbPledgeDollar,
+        dbMatchedNaira,
+        dbMatchedDollar,
+        dbPendingNaira,
+        dbPendingDollar,
+        dbUnpaidNaira,
+        dbUnpaidDollar
     }
 };
 
@@ -70,16 +94,22 @@ const deadline = (progress, type) => {
         const now = new Date();
         deadllineArr = date.addDays(now, + 13).toString().split(' ');
         deadllineDay = `${deadllineArr[0]} ${deadllineArr[1]} ${deadllineArr[2]} ${deadllineArr[3]} ${deadllineArr[4]}`;
+    }  else if (progress === 'awaiting payment' && type === 'bitcoin') {
+        const now = new Date();
+        deadllineArr = date.addDays(now, + 30).toString().split(' ');
+        deadllineDay = `${deadllineArr[0]} ${deadllineArr[1]} ${deadllineArr[2]} ${deadllineArr[3]} ${deadllineArr[4]}`;
     }
 
     return deadllineDay;
 }
 
 const profit = (type, amount) => {
-    if (type.toLowerCase() === 'gold') {
+    if (type === 'gold') {
         return amount + (amount * 0.5);
-    } else {
+    } else if (type === 'silver') {
         return amount + (amount * 0.25);
+    } else if (type === 'bitcoin') {
+        return amount + (amount * 0.30);
     }
 };
 

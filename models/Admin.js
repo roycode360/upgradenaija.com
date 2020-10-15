@@ -24,6 +24,9 @@ const AdminSchema = new mongoose.Schema({
   totalAmount: {
     type: Number,
     default: 0
+  },
+  walletID: {
+    type: String
   }
 });
 

@@ -181,6 +181,9 @@ router.post('/actions', preAuthenticated, async (req, res) => {
           reciever.deadline = deadline('awaiting payment');
         };
       })
+      // save both users
+      await sender.save();
+      await reciever.save();
     }
 
     if (req.body.action_type === 'confirm user') {
@@ -239,7 +242,7 @@ router.post('/actions', preAuthenticated, async (req, res) => {
         sender.referralBonus.accName = referrer.pledge.accName;
         sender.referralBonus.accNumber = referrer.pledge.accNumber;
         sender.referralBonus.accType = referrer.pledge.accType;
-        sender.referralBonus.amount = (20000 * 0.05);
+        sender.referralBonus.amount = (sender.pledge.pledgeAmount * 0.05);
       }
 
       reciever.expectedFunds.users.forEach(async (cur, ind) => {
@@ -303,5 +306,138 @@ router.post('/removeReferrer', preAuthenticated, async (req, res) => {
     res.redirect(`/${process.env.ADMIN_ROUTE}`);
   }
 })
+
+// confirm bitcoin transactions
+router.post('/bitcoin/confirm', preAuthenticated, async (req, res) => {
+  try {
+    const sender = await User.findOne({
+      email: req.body.S_email
+    });
+    if (!sender) {
+      throw new Error('User not found!');
+    }
+
+    if (req.body.action_type === 'confirm transfer') {
+      // sender updates
+      // update progress
+      sender.progress = {
+        awaitingFund: true,
+        pledge: false,
+        matchedFund: false,
+        matched: false
+      }
+      // update status
+      sender.status = 'awaiting payment';
+
+      // update deadline
+      sender.deadline = deadline('awaiting payment', sender.pledge.pledgeType);
+
+      // update amount
+      sender.amount = profit(sender.pledge.pledgeType, sender.pledge.pledgeAmount);
+
+      // update referral payment
+      const referrer = await User.findOne({
+        promo_code: sender.referral_code
+      });
+      if (referrer) {
+        sender.referralBonus.accName = referrer.pledge.accName;
+        sender.referralBonus.accNumber = referrer.pledge.accNumber;
+        sender.referralBonus.accType = referrer.pledge.accType;
+        sender.referralBonus.amount = (sender.pledge.pledgeAmount * 0.05);
+      }
+
+      // find admin
+      const admin = await Admin.findOne({
+        admin: true
+      });
+
+      // create a new transaction model and save this confirmed transaction
+      const transaction = new Transaction({
+        senderEmail: sender.email,
+        recieverEmail: admin.walletID,
+        amountSent: sender.pledge.pledgeAmount,
+        senderPledgeType: sender.pledge.pledgeType,
+        recieverPledgeType: 'Bitcoin ID',
+        dateOfTransaction: new Date()
+      })
+      // save transaction information
+      await transaction.save();
+
+      // update total amount field in admin
+      admin.totalAmount += sender.pledge.pledgeAmount;
+      // save admin
+      await admin.save();
+      // delete sender from reciver's list of unpaid transactions
+
+      // save users
+      await sender.save();
+    } else if (req.body.action_type === 'confirm payment') {
+      // find admin
+      const admin = await Admin.findOne({
+        admin: true
+      });
+
+      // create a new transaction model and save this confirmed transaction
+      const transaction = new Transaction({
+        senderEmail: admin.walletID,
+        recieverEmail: sender.email,
+        amountSent: sender.expectedFunds.statistics.expect,
+        senderPledgeType: 'Bitcoin ID',
+        recieverPledgeType: sender.pledge.pledgeType,
+        dateOfTransaction: new Date()
+      })
+      // save transaction information
+      await transaction.save();
+
+      // update total amount field in admin
+      admin.totalAmount += sender.expectedFunds.statistics.expect;
+      // save admin
+      await admin.save();
+
+      // sender updates
+      sender.paymentDetails = {};
+      sender.progress = {
+        matched: false,
+        matchedFund: false,
+        pledge: false,
+        awaitingFund: false
+      }
+      sender.status = undefined;
+      sender.amount = 0;
+      sender.deadline = undefined;
+      sender.expectedFunds.statistics = {
+        matched: 0,
+        expect: 0,
+      };
+      // save users
+      await sender.save();
+    }
+
+
+    req.flash("success_msg", "User Confirmed!");
+    res.redirect(`/${process.env.ADMIN_ROUTE}`);
+  } catch (e) {
+    req.flash("error_msg", `${e}`);
+    res.redirect(`/${process.env.ADMIN_ROUTE}`);
+  }
+});
+
+// change bitcoin id
+router.post('/bitcoin/change', preAuthenticated, async (req, res) => {
+  try {
+    const admin = await Admin.findOne({
+      admin: true
+    });
+    admin.walletID = req.body.btc_id;
+
+    await admin.save();
+
+    req.flash("success_msg", "Wallet ID Changed!");
+    res.redirect(`/${process.env.ADMIN_ROUTE}`);
+  } catch (e) {
+    req.flash("error_msg", `${e}`);
+    res.redirect(`/${process.env.ADMIN_ROUTE}`);
+  }
+});
 
 module.exports = router;

@@ -12,8 +12,15 @@
     <td><%= user.email %></td>
     <td><b><%= user.pledge.pledgeType %></b></td>
     <td><%= user.status %></td>
-    <td><b><%= formatAmount(user.amount) %></b></td>
-    <td><%= formatAmount(user.expectedFunds.statistics.matched) %></td>
+    <%
+      let sign;
+      user.pledge.pledgeType === 'bitcoin' ? sign = '$' : sign = '₦';
+      if (user.status === 'None') {
+        sign = '';
+      }
+    %> 
+    <td><b><%= sign %><%= formatAmount(user.amount) %></b></td>
+    <td><%= sign %><%= formatAmount(user.expectedFunds.statistics.matched) %></td>
     <td><b><%= user.deadline %></b></td>
   </tr>
 <% }) %>
